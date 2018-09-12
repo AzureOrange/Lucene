@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.dao.UserDao;
 import com.example.demo.domain.User;
 import com.example.demo.lucene.CreateAndSearch;
+import com.example.demo.lucene.UpdateAndDelete;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
@@ -30,6 +31,9 @@ public class LuceneTest {
     @Autowired
     private CreateAndSearch createAndSearch;
 
+    @Autowired
+    private UpdateAndDelete updateAndDelete;
+
     @Test
     public void createIndex() throws Exception {
         List<User> users = userDao.findAll();
@@ -39,7 +43,7 @@ public class LuceneTest {
 
     @Test
     public void search(){
-        String keyWork = "傻子";
+        String keyWork = "15";
 
         List<User> users = createAndSearch.search(keyWork);
         if (CollectionUtils.isEmpty(users)){
@@ -50,5 +54,19 @@ public class LuceneTest {
         for (User user : users){
             System.out.println(user);
         }
+    }
+
+    @Test
+    public void update() throws Exception {
+        User user = User.builder().age(666).content("传智博客").id("5b974d4aea12a2702429b5b9").build();
+
+        updateAndDelete.updateIndexDB(user);
+    }
+
+    @Test
+    public void delete() throws Exception{
+        String id = "5b974d4aea12a2702429b5b9";
+
+        updateAndDelete.deleteIndexDB(id);
     }
 }

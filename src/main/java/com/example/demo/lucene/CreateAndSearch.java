@@ -3,6 +3,7 @@ package com.example.demo.lucene;
 import com.example.demo.domain.User;
 import com.example.demo.util.LuceneUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * descript
+ * 添加和查询
  *
  * @author orange
  * @Time 2018/9/11 0011
@@ -111,7 +112,10 @@ public class CreateAndSearch {
 
                 // 8、根据Document对象获取需要的值
                 User user = (User) LuceneUtil.document2javabean(document, User.class);
-                user.setContent(highlighter.getBestFragment(analyzer, "content", content));
+                String contentLighter = highlighter.getBestFragment(analyzer, "content", content);
+                if (StringUtils.isNotBlank(contentLighter)){
+                    user.setContent(contentLighter);
+                }
                 users.add(user);
             }
 
